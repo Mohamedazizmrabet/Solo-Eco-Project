@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,66 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model items {
+  id           Int          @id @default(autoincrement())
+  title        String       @db.VarChar(100)
+  description  String       @db.Text
+  price        String       @db.VarChar(25)
+  gategorie    String       @db.VarChar(45)
+  img          Json
+  user_user_id Int
+  user         user         @relation(fields: [user_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_items_user1")
+  user_items   user_items[]
+  wishlists    wishlists[]
+
+  @@index([user_user_id], map: "fk_items_user1_idx")
+}
+
+model review {
+  rev_id       Int     @id @default(autoincrement())
+  revRating    Int
+  comments     String? @db.VarChar(255)
+  user_user_id Int
+  user         user    @relation(fields: [user_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_user1")
+
+  @@index([user_user_id], map: "fk_review_user1_idx")
+}
+
+model user {
+  username   String       @unique(map: "username_UNIQUE") @db.VarChar(16)
+  email      String       @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  phoneN     String       @db.VarChar(8)
+  user_id    Int          @id @default(autoincrement())
+  profile    String?      @db.VarChar(255)
+  items      items[]
+  review     review[]
+  user_items user_items[]
+  wishlists  wishlists[]
+}
+
+model user_items {
+  iduser_Items Int   @map("iduser-Items")
+  items_id     Int
+  user_user_id Int
+  items        items @relation(fields: [items_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user-Items_items1")
+  user         user  @relation(fields: [user_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user-Items_user1")
+
+  @@id([iduser_Items, items_id, user_user_id])
+  @@index([items_id], map: "fk_user-Items_items1_idx")
+  @@index([user_user_id], map: "fk_user-Items_user1_idx")
+  @@map("user-items")
+}
+
+model wishlists {
+  user_user_id Int
+  item_id      Int
+  items        items @relation(fields: [item_id], references: [id], onDelete: Cascade, map: "fk_item")
+  user         user  @relation(fields: [user_user_id], references: [user_id], onDelete: Cascade, map: "fk_wishlists_user1")
+
+  @@id([user_user_id, item_id])
+  @@index([item_id], map: "fk_item_idx")
+  @@index([user_user_id], map: "fk_wishlists_user1_idx")
 }
