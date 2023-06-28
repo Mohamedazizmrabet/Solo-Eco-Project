@@ -17,20 +17,23 @@ useEffect(() => {
   };
 
   BestFiveItems();
-console.log("hi");
 
-  setInterval(() => {
+  const intervalId = setInterval(() => {
     console.log(counter);
     
     setcounter((prevCounter:number) => prevCounter +1);
   }, 4000);
-}, [data]);
 
+  return () => {
+    clearInterval(intervalId);
+  };
+}, [data]);
+  
 console.log(counter);
 
   return (
     <div>
-     <img src= { bestRev[counter]?bestRev[counter].images :"waiting for the data" } alt="hahahhahha" srcset="" />
+     <img src= { bestRev[counter]?bestRev[counter].images :"waiting for the data" } alt="" srcset="" />
       hi
     </div>
   );
