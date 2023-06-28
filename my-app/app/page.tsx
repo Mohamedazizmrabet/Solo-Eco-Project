@@ -1,9 +1,37 @@
-import Image from 'next/image'
+"use client"
+import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+
+import DumyData from './MOCK_DATA';
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+  const [data, setData] = useState(DumyData);
+  const [bestRev, setBestRev] = useState<typeof data>([]);
+const [counter, setcounter] = useState(0)
+useEffect(() => {
+  const BestFiveItems = () => {
+    if (data.length) {
+      let arr: typeof data = data.filter((item) => item.reviews >= 3.5);
+      setBestRev(arr);
+    }
+  };
 
-    </main>
-  )
+  BestFiveItems();
+console.log("hi");
+
+  setInterval(() => {
+    console.log(counter);
+    
+    setcounter((prevCounter:number) => prevCounter +1);
+  }, 4000);
+}, [data]);
+
+console.log(counter);
+
+  return (
+    <div>
+     <img src= { bestRev[counter]?bestRev[counter].images :"waiting for the data" } alt="hahahhahha" srcset="" />
+      hi
+    </div>
+  );
 }
