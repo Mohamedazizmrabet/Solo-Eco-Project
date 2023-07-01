@@ -7,4 +7,5 @@ export class ProductController {
   getHello(): string {
     return "hello from product";
   }
+  
 }
