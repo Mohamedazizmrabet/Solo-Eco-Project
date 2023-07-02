@@ -3,17 +3,21 @@
     height: 0; /* Set an initial height of 0 */
     padding-bottom: 30%; /* Create a responsive height based on the width */
     position: relative;
-    .next{
+    .prev{
         position: absolute;
         top: 50%;
         left: 5%;
         z-index: 999;
+        width: 10%;
+        height: 10%;
     }
-    .prev{
+    .next{
         position: absolute;
         top: 50%;
-        right: 5%;
+        left:90% ;
         z-index: 999;
+        width: 10%;
+        height: 10%;
 
     }
   }
