@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import styles from "./styles/main.module.scss";
 import DummyData from "./MOCK_DATA";
-
 export default function Home() {
   const [data, setData] = useState(DummyData);
   const [bestRev, setBestRev] = useState<typeof data>([]);

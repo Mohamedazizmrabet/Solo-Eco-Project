@@ -7,7 +7,7 @@ const getUsers = async () => {
   return allUsers;
 };
 
-const addUser = async (user) => {
+const addUser = async (user :user) => {
   const addedUser = await prisma.user.create({
     data: user,
   });
