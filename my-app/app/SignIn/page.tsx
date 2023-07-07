@@ -1,9 +1,17 @@
 "use client"
 import React from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-
-const onFinish = (values: any) => {
-  console.log('Success:', values);
+import axios from 'axios';
+const onFinish =async (values: any) => {
+  try {
+    
+    console.log('Success:', values);
+  const result= await axios.get(`http://localhost:3000/user/getOne/${values.username}`)
+  console.log(result);
+  
+  } catch (error) {
+    
+  }
 };
 
 const onFinishFailed = (errorInfo: any) => {

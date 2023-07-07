@@ -7,11 +7,21 @@ const getUsers = async () => {
   return allUsers;
 };
 
-const addUser = async (user :user) => {
-  const addedUser = await prisma.user.create({
-    data: user,
-  });
+ async function addUser (user) {
+  const addedUser = await prisma.user.create(
+    {
+    data: user
+  }
+  );
   return addedUser;
 };
 
-module.exports = { prisma, getUsers, addUser };
+async function getOneUser(userName){
+ const oneUser=await prisma.user.findUnique({
+  where:{
+    username:userName,
+  }
+ })
+ return oneUser
+}
+module.exports = { prisma, getUsers, addUser,getOneUser };
