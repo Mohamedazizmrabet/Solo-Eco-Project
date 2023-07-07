@@ -2,16 +2,16 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
- async function add(data:item) {
-  try {
-    const createdUser = await prisma.user.create({
-      data: data,
-    });
-    console.log(createdUser);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-export {add}
+const getUsers = async () => {
+  const allUsers = await prisma.user.findMany();
+  return allUsers;
+};
+
+const addUser = async (user) => {
+  const addedUser = await prisma.user.create({
+    data: user,
+  });
+  return addedUser;
+};
+
+module.exports = { prisma, getUsers, addUser };
