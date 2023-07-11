@@ -16,12 +16,16 @@ const getUsers = async () => {
   return addedUser;
 };
 
-async function getOneUser(userName){
+async function getOneUser(userName,password){
+  console.log(userName,password,"from prisma");
+  
  const oneUser=await prisma.user.findUnique({
   where:{
     username:userName,
+    
   }
  })
- return oneUser
+ if(oneUser.password===password) return oneUser
+ else  throw new Error("user is not found");
 }
 module.exports = { prisma, getUsers, addUser,getOneUser };

@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body,Param } from "@nestjs/common";
+import { Controller, Get, Post, Body,Param,BadRequestException } from "@nestjs/common";
 import { AppService } from './app.service';
-console.log("hi");
 const { prisma, getUsers, addUser,getOneUser } = require('../../ormPrisma/index.ts');
 interface ParamsUser {
   userName:string
+  password:string
 }
 @Controller("user")
 export class ProductController {
@@ -35,16 +35,20 @@ export class ProductController {
       process.exit(1);
     }
   }
-@Get("getOne/:userName")
-async getOne(@Param() userName : ParamsUser):Promise<typeof data>{
+@Get("getOne/:userName/:password")
+async getOne(@Param() OneUser : ParamsUser):Promise<typeof data>{
   try {
     
-    console.log(userName.userName);
-    const user= await getOneUser(( userName.userName))
+    console.log(OneUser.userName,OneUser.password);
+    const user= await getOneUser( OneUser.userName,OneUser.password)
+    console.log(user);
+    
     return user
     
   } catch (error) {
-    console.log(error);
+    await prisma.$disconnect();
+    throw new BadRequestException(error);
+    
     
   }
 }
