@@ -1,42 +1,31 @@
-import { PrismaClient } from '@prisma/client'
+const { PrismaClient } = require('@prisma/client');
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-// async function main() {
-//   // ... you will write your Prisma Client queries here
-//   const allUsers=await prisma.user.findMany() 
-//   console.log(allUsers);
-    
-// }
+const getUsers = async () => {
+  const allUsers = await prisma.user.findMany();
+  return allUsers;
+};
 
-// main()
-//   .then(async () => {
-//     await prisma.$disconnect()
-//   })
-//   .catch(async (e) => {
-//     console.error(e)
-//     await prisma.$disconnect()
-//     process.exit(1)
-//   })
-async function add(){
-  const addUsers = await prisma.user.create({
-    data: {
-      username: 'Alice',
-      email: 'alice@prisma.io',
-      password:'14785',
-      phoneN:"12345678"
-    
-    },
-  } )
-  console.log(addUsers);
+ async function addUser (user) {
+  const addedUser = await prisma.user.create(
+    {
+    data: user
+  }
+  );
+  return addedUser;
+};
+
+async function getOneUser(userName,password){
+  console.log(userName,password,"from prisma");
   
+ const oneUser=await prisma.user.findUnique({
+  where:{
+    username:userName,
+    
+  }
+ })
+ if(oneUser.password===password) return oneUser
+ else  throw new Error("user is not found");
 }
-add().then(async()=>{
-  await prisma.$disconnect()
-}).catch(async(err)=>{
-  console.log(err);
-  await prisma.$disconnect()
-  process.exit(1)
-  
-})
-
+module.exports = { prisma, getUsers, addUser,getOneUser };

@@ -3,39 +3,58 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import styles from "./styles/main.module.scss";
 import DummyData from "./MOCK_DATA";
+import axios from "axios";
 
 export default function Home() {
   const [data, setData] = useState(DummyData);
   const [bestRev, setBestRev] = useState<typeof data>([]);
   const [counter, setCounter] = useState(0);
-  const [refresh,setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
+
+  console.log("hi", bestRev);
+
+  const BestFiveItems = (array: []) => {
+    console.log(array);
+    if (data.length) {
+      let arr: typeof data = array.filter((item) => item?.rating >= 2);
+      setBestRev(arr);
+    }
+  };
+
   useEffect(() => {
-    const BestFiveItems = () => {
-      if (data.length) {
-        let arr: typeof data = data.filter((item) => item.reviews >= 3.5);
-        setBestRev(arr);
-      }
-    };
-    
-    BestFiveItems();
+    axios.get("https://dummyjson.com/products").then((res) => {
+      console.log(res.data.products);
+      BestFiveItems(res.data.products);
+      setData(res.data.products);
+    });
+
     const intervalId = setInterval(() => {
-      
-      setCounter((prevCounter:number) =>{
-     if(prevCounter>=data.length){
-        return prevCounter=1
-      }
-      else if(prevCounter<=0){
-        return prevCounter=1
-      }
-      else return prevCounter + 1});
+      setCounter((prevCounter: number) => {
+        if (prevCounter >= data.length - 1) {
+          return 0;
+        } else {
+          return prevCounter + 1;
+        }
+      });
     }, 4000);
 
     return () => {
       clearInterval(intervalId);
     };
   }, [refresh]);
+
   const controlTheImage = (x: number) => {
-    setCounter((prevCounter: number) => prevCounter + x);
+    setCounter((prevCounter: number) => {
+      let newCounter = prevCounter + x;
+
+      if (newCounter > data.length - 1) {
+        return 0;
+      } else if (newCounter < 0) {
+        return data.length - 1;
+      } else {
+        return newCounter;
+      }
+    });
   };
 
   console.log(counter);
@@ -43,12 +62,15 @@ export default function Home() {
   return (
     <main>
       <div className={styles.promotion}>
-        <img
-          src={
-            bestRev[counter] ? bestRev[counter].images : "waiting for the data"
-          }
-          alt="images"
-        />
+        {bestRev.length > 0 ? (
+          <img
+            className={styles.products}
+            src={bestRev[counter].images[0]}
+            alt="images"
+          />
+        ) : (
+          <p className={styles.placeholder}>Waiting for data...</p>
+        )}
         <img
           src="./back.svg"
           className={styles.prev}
