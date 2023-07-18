@@ -1,11 +1,15 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import styles from "./styles/main.module.scss";
 import DummyData from "./MOCK_DATA";
 import axios from "axios";
-
+import {Mycontext} from "./layout"
 export default function Home() {
+  console.log(fetch);
+  const context=useContext(Mycontext)
+  console.log("from tha main page",context?.value);
+  
   const [data, setData] = useState(DummyData);
   const [bestRev, setBestRev] = useState<typeof data>([]);
   const [counter, setCounter] = useState(0);
