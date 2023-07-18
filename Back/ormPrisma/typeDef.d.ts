@@ -14,6 +14,6 @@ interface user {
   email: string;
   password: string;
   phoneN: string;
-  id_user: number;
+  id_user?: number;
   profile: string;
 }

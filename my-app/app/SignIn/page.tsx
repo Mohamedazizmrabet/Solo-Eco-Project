@@ -1,19 +1,35 @@
 "use client"
-import React from 'react';
+import React,{useState,useContext} from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
+import axios from 'axios';
+import {Mycontext} from '../layout'
+import Link from "next/link";
+import { useRouter } from 'next/navigation'
+const SignIn: React.FC = () => {
+  
+  const route=useRouter()
+  const {setValue}=useContext(Mycontext)
+  const onFinish =async (values: any) => {
+    try {
+      console.log('Success:', values);
+    const result= await axios.get(`http://localhost:3000/user/getOne/${values.username}/${values.password}`)
+    console.log(result.data);
+    setValue(result.data)
+    route.push("/")
+    } catch (error) {
+      console.log(error);
+      route.push("/404")
 
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
-
-const signIn: React.FC = () => (
-  <Form
-    name="basic"
-    labelCol={{ span: 8 }}
+    }
+  };
+  console.log(setValue);
+  
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+  return (<Form
+  name="basic"
+  labelCol={{ span: 8 }}
     wrapperCol={{ span: 16 }}
     style={{ maxWidth: 600 }}
     initialValues={{ remember: true }}
@@ -46,7 +62,7 @@ const signIn: React.FC = () => (
         Submit
       </Button>
     </Form.Item>
-  </Form>
-);
+  </Form>)
+};
 
-export default signIn;
+export default SignIn;
