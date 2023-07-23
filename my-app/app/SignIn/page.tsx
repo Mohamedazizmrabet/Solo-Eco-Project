@@ -1,4 +1,5 @@
 "use client"
+
 import React,{createContext,useState,useContext} from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import axios from 'axios';
@@ -31,6 +32,7 @@ const SignIn: React.FC = () => {
   return <Form
     name="basic"
     labelCol={{ span: 8 }}
+
     wrapperCol={{ span: 16 }}
     style={{ maxWidth: 600 }}
     initialValues={{ remember: true }}
@@ -62,8 +64,9 @@ const SignIn: React.FC = () => {
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
-    </Form.Item>
+
   </Form>
+
 };
 
 export default SignIn;
