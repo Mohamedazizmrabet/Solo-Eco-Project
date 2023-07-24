@@ -4,16 +4,19 @@ import React, { useState, useEffect,useContext } from "react";
 import styles from "./styles/main.module.scss";
 import DummyData from "./MOCK_DATA";
 import axios from "axios";
-import {Mycontext} from "./layout"
+
+import AllProducts from "./comp/AllProducts";
+
+import {MyContext} from "./layout"
 import AllProductDisplay from "./comp/AllProductDisplay";
 
 export default function Home() {
   console.log(fetch);
-  const context=useContext(Mycontext)
+  const context=useContext(MyContext)
   console.log("from tha main page",context?.value);
   
   const [data, setData] = useState(DummyData);
-  const [bestRev, setBestRev] = useState<typeof data>([]);
+  const [bestRev, setBestRev] = useState<typeof items>([]);
   const [counter, setCounter] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
@@ -21,7 +24,7 @@ export default function Home() {
   const BestFiveItems = (array: []) => {
     console.log(array);
     if (data.length) {
-      let arr: typeof data = array.filter((item) => item?.rating >= 2);
+      let arr: typeof items = array.filter((item:item) => item?.rating >= 2);
       setBestRev(arr);
     }
   };
@@ -91,7 +94,9 @@ export default function Home() {
           }}
         />
       </div>
-      <AllProductDisplay data={data}/>
+      <section>
+<AllProducts data={data} />
+      </section>
     </main>
   );
 }

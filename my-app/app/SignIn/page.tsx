@@ -1,35 +1,38 @@
 "use client"
-import React,{useState,useContext} from 'react';
+
+import React,{createContext,useState,useContext} from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import axios from 'axios';
-import {Mycontext} from '../layout'
-import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import {MyContext} from "../layout"
+const onFinishFailed = (errorInfo: any) => {
+  console.log('Failed:', errorInfo);
+};
+export const AuthContext = createContext([]);
 const SignIn: React.FC = () => {
+  console.log("hi");
   
-  const route=useRouter()
-  const {setValue}=useContext(Mycontext)
+  const {updateContext}= useContext(MyContext)
+  console.log(updateContext);
+  
+  const [signIn,setSignIn]=useState<typeof users>([])
   const onFinish =async (values: any) => {
     try {
+      
       console.log('Success:', values);
-    const result= await axios.get(`http://localhost:3000/user/getOne/${values.username}/${values.password}`)
-    console.log(result.data);
-    setValue(result.data)
-    route.push("/")
+    const result:typeof users= await axios.get(`http://localhost:3000/user/getOne/${values.username}/${values.password}`)
+    setSignIn(result.data)
+    updateContext(result.data)  
+    console.log(result);
+    
     } catch (error) {
-      console.log(error);
-      route.push("/404")
-
+      
     }
   };
-  console.log(setValue);
-  
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-  return (<Form
-  name="basic"
-  labelCol={{ span: 8 }}
+
+  return <Form
+    name="basic"
+    labelCol={{ span: 8 }}
+
     wrapperCol={{ span: 16 }}
     style={{ maxWidth: 600 }}
     initialValues={{ remember: true }}
@@ -61,8 +64,9 @@ const SignIn: React.FC = () => {
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
-    </Form.Item>
-  </Form>)
+
+  </Form>
+
 };
 
 export default SignIn;
