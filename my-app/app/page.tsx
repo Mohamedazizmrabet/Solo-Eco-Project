@@ -5,6 +5,8 @@ import styles from "./styles/main.module.scss";
 import DummyData from "./MOCK_DATA";
 import axios from "axios";
 import {Mycontext} from "./layout"
+import AllProductDisplay from "./comp/AllProductDisplay";
+
 export default function Home() {
   console.log(fetch);
   const context=useContext(Mycontext)
@@ -15,7 +17,6 @@ export default function Home() {
   const [counter, setCounter] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
-  console.log("hi", bestRev);
 
   const BestFiveItems = (array: []) => {
     console.log(array);
@@ -90,6 +91,7 @@ export default function Home() {
           }}
         />
       </div>
+      <AllProductDisplay data={data}/>
     </main>
   );
 }
