@@ -12,7 +12,7 @@ function SingleItemDisplay(props: Props) {
     }}>
 
       <h1 >{props.el.title}</h1>
-      <img src={props.el.images[0]} alt="" srcset="" />
+      <img src={props.el.images[0]} alt="" srcSet="" />
 
     </div>
   )

@@ -7,13 +7,11 @@ import axios from "axios";
 
 import AllProducts from "./comp/AllProducts";
 
-import {MyContext} from "./layout"
-import AllProductDisplay from "./comp/AllProductDisplay";
+// import AllProductDisplay from "./comp/AllProductDisplay";
 
 export default function Home() {
   console.log(fetch);
-  const context=useContext(MyContext)
-  console.log("from tha main page",context?.value);
+  
   
   const [data, setData] = useState(DummyData);
   const [bestRev, setBestRev] = useState<typeof items>([]);
